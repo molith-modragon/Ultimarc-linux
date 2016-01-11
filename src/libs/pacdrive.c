@@ -110,12 +110,9 @@ bool updateBoardPacDrive (json_object *jobj)
 
   int idx = 0;
   int board = 0;
-  int map2 = 0;
-  int map3 = 0;
-  int total = 0;
   uint16_t product = PACDRIVE_PRODUCT;
 
-  char map[PACDRIVE_DATA_SIZE] = {0,0,0,0};
+  uint8_t map[PACDRIVE_DATA_SIZE] = {0,0,0,0};
 
   bool result = true;
 
@@ -166,10 +163,6 @@ bool updateBoardPacDrive (json_object *jobj)
     result = false;
     goto error;
   }
-
-  exit:
-    closeUSB(ctx, handle, PACDRIVE_INTERFACE);
-    return result;
 
   error:
     return result;

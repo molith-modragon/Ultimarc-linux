@@ -59,13 +59,10 @@ bool validateIPACData(json_object* jobj, int size)
 {
   bool valid = true;
   json_object* tmp = NULL;
-  json_object* pin = NULL;
   json_object* pins = NULL;
 
   int pinCount = 0;
   int tmpCount = 0;
-  char* key = NULL;
-  char* tmpKey = NULL;
 
   /* Required */
   if (json_object_object_get_ex(jobj, "1/2 shift key", &tmp))
@@ -96,6 +93,7 @@ bool validateIPACData(json_object* jobj, int size)
         {
           json_object_object_foreach(pin, tmpKey, tmp)
           {
+            (void)tmpKey; /* avoid warning about unused var */
             tmpCount++;
             if (!json_object_is_type(tmp, json_type_string))
             {
@@ -129,13 +127,10 @@ bool validateIPAC4Data (json_object* jobj)
   bool valid = true;
 
   json_object* tmp = NULL;
-  json_object* pin = NULL;
   json_object* pins = NULL;
 
   int pinCount = 0;
   int tmpCount = 0;
-  char* key = NULL;
-  char* tmpKey = NULL;
 
   /* Required */
   if (json_object_object_get_ex(jobj, "1/2 shift key", &tmp))
@@ -180,6 +175,7 @@ bool validateIPAC4Data (json_object* jobj)
         {
           json_object_object_foreach(pin, tmpKey, tmp)
           {
+            (void)tmpKey; /* avoid warning about unused var */
             tmpCount++;
             if (!json_object_is_type(tmp, json_type_string))
             {

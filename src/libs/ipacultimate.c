@@ -55,12 +55,8 @@ int getIPacUltimateVersion()
 
 bool validateIPacUltimateData(json_object* jobj)
 {
-  const char invalidKey = 0x00;
-  char data;
-
   bool valid = false;
   int idx = 0;
-  int boardID = 0;
   json_object* tmp = NULL;
   json_object* leds = NULL;
   json_object* led = NULL;
@@ -165,9 +161,9 @@ bool validateIPacUltimateData(json_object* jobj)
 	      for (idx = 0; idx < json_object_array_length(tmp); ++ idx)
           {
             pins = json_object_array_get_idx(tmp, idx);
-
 	        json_object_object_foreach(pins, key, pin)
 	        {
+                  (void)key; /* avoid warning about unused but set var */
               if (json_object_get_type(pin) == json_type_array)
               {
                 if (json_object_get_type(json_object_array_get_idx(pin, 0)) != json_type_string ||
@@ -319,11 +315,6 @@ quadAssignmentIPACUltimate (unsigned char* data, unsigned char keyval,
 bool populateIPACUltimateData(json_object* jobj, unsigned char* data)
 {
   bool retval = false;
-
-  int idx = 0;
-  int keypos = 0;
-  int shiftpos = 0;
-  int swappos = 0;
 
   unsigned char keyval;
   char shiftval;
@@ -590,7 +581,6 @@ bool updateBoardIPacUltimate(json_object* jobj)
   int ret = 0;
 
   int idx = 0;
-  int intensity = 0;
   int board = 0;
   uint16_t product = IPACULTIMATE_PRODUCT;
 
@@ -742,6 +732,8 @@ bool updateBoardIPacUltimate(json_object* jobj)
                                      map,
                                      IPACSERIES_MESG_LENGTH,
                                      UM_TIMEOUT);
+       if (ret < 0)
+         return false;
        debug ("Write result: %i", ret);
      }
   }
@@ -762,11 +754,9 @@ bool updateBoardIPacUltimate(json_object* jobj)
 							map,
 							IPACSERIES_MESG_LENGTH,
 							UM_TIMEOUT);
+        if (ret < 0)
+          return false;
   }
-
-exit:
-	closeUSB(ctx, handle, IPACULTIMATE_INTERFACE);
-	return result;
 
 error:
 	return result;

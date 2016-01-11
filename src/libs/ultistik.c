@@ -319,6 +319,8 @@ bool updateBoardULTISTIK (json_object* jobj)
                                       NULL,
                                       0,
                                       UM_TIMEOUT);
+        if (ret < 0)
+          return false;
 
         for (idx = 0; idx < 3; ++ idx)
         {
@@ -330,6 +332,8 @@ bool updateBoardULTISTIK (json_object* jobj)
                                         data + (USTIK_MESG_PRE_2015*idx),
                                         USTIK_MESG_PRE_2015,
                                         UM_TIMEOUT);
+          if (ret < 0)
+            return false;
 
           ret = libusb_control_transfer(handle,
                                         USTIK_REQUEST_TYPE_2,
@@ -339,6 +343,8 @@ bool updateBoardULTISTIK (json_object* jobj)
                                         NULL,
                                         0,
                                         UM_TIMEOUT);
+          if (ret < 0)
+            return false;
         }
 
         ret = libusb_control_transfer(handle,
@@ -349,6 +355,8 @@ bool updateBoardULTISTIK (json_object* jobj)
                                       NULL,
                                       0,
                                       UM_TIMEOUT);
+        if (ret < 0)
+          return false;
 
 
         closeUSB(ctx, handle, USTIK_INTERFACE_PRE_2015);
@@ -379,6 +387,8 @@ bool updateBoardULTISTIK (json_object* jobj)
                                         data + idx,
                                         USTIK_MESG_LENGTH,
                                         UM_TIMEOUT);
+          if (ret < 0)
+            return false;
           debug ("Write result: %i", ret);
 
           idx+=4;
@@ -419,6 +429,8 @@ bool updateBoardULTISTIK (json_object* jobj)
                                       NULL,
                                       0,
                                       UM_TIMEOUT);
+        if (ret < 0)
+          return false;
 
         ret = libusb_control_transfer(handle,
                                       USTIK_REQUEST_TYPE_1,
@@ -428,6 +440,8 @@ bool updateBoardULTISTIK (json_object* jobj)
                                       data,
                                       USTIK_MESG_PRE_2015,
                                       UM_TIMEOUT);
+        if (ret < 0)
+          return false;
 
         ret = libusb_control_transfer(handle,
                                       USTIK_REQUEST_TYPE_2,
@@ -437,6 +451,8 @@ bool updateBoardULTISTIK (json_object* jobj)
                                       NULL,
                                       0,
                                       UM_TIMEOUT);
+        if (ret < 0)
+          return false;
 
         ret = libusb_control_transfer(handle,
                                       USTIK_REQUEST_TYPE_1,
@@ -446,6 +462,8 @@ bool updateBoardULTISTIK (json_object* jobj)
                                       NULL,
                                       0,
                                       UM_TIMEOUT);
+        if (ret < 0)
+          return false;
 
         closeUSB(ctx, handle, USTIK_INTERFACE_PRE_2015);
       break;
@@ -472,6 +490,8 @@ bool updateBoardULTISTIK (json_object* jobj)
                                     data,
                                     USTIK_MESG_LENGTH,
                                     UM_TIMEOUT);
+      if (ret < 0)
+        return false;
       debug ("Write result: %i", ret);
 
       closeUSB(ctx, handle, USTIK_INTERFACE);
@@ -480,12 +500,6 @@ bool updateBoardULTISTIK (json_object* jobj)
 
     log_info ("Ultistik #%i needs to be physically disconnected and reconnected before use.", controlNew);
   }
-
-/* I know these have the same statement currently, but leaving
- * exit in for the just-in-case moment down the line.
- */
-  exit:
-    return result;
 
   error:
     return result;

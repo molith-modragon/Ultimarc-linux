@@ -50,6 +50,6 @@ bool checkBoardID(json_object* jobj, const char* entry);
 /**
  * Convert decimal into one character hex value
  */
-char convertDecimalToHex(int decimal);
+uint8_t convertDecimalToHex(int decimal);
 
 #endif /* COMMON_H_ */

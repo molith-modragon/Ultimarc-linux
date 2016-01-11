@@ -53,7 +53,6 @@ bool validatePacLED64Data(json_object* jobj)
 {
   bool valid = false;
   int idx = 0;
-  int boardID = 0;
   json_object* tmp = NULL;
   json_object* leds = NULL;
   json_object* led = NULL;
@@ -198,11 +197,10 @@ bool updateBoardPacLED (json_object *jobj)
   struct libusb_device_handle *handle = NULL;
 
   int idx = 0;
-  int intensity = 0;
   int board = 0;
   uint16_t product = PACLED_PRODUCT;
 
-  char map[PACLED_DATA_SIZE] = {0,0};
+  uint8_t map[PACLED_DATA_SIZE] = {0,0};
 
   bool result = true;
 
@@ -346,10 +344,6 @@ bool updateBoardPacLED (json_object *jobj)
                             PACLED_MESG_LENGTH,
                             UM_TIMEOUT);
   }
-
-  exit:
-    closeUSB(ctx, handle, PACLED_INTERFACE);
-    return result;
 
   error:
     return result;

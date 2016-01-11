@@ -809,9 +809,6 @@ void populateBoardArray (int bid, json_object* jobj, unsigned char* barray)
   int idx = -1;
   int lkey = -1;
 
-  unsigned char keyval;
-  char shiftval;
-
   json_object *tmp = NULL;
 
   json_object_object_foreach(jobj, key, pin)
@@ -1093,6 +1090,11 @@ void populateMacrosPosition (enum ipac_boards_t bid, json_object* macros, unsign
          /* Move the idx2015 to the next available location */
          idx2015 += pos;
        break;
+       case ULTIMATE_IO_BOARD:
+       case HIDIO_BOARD:
+       case NO_IPAC_BOARD:
+         /* nothing to do */
+       break;
     }
   }
 }
@@ -1134,21 +1136,12 @@ bool writeIPACSeriesUSB (unsigned char* barray, int size, uint16_t vendor, uint1
                                     mesg,
                                     IPACSERIES_MESG_LENGTH,
                                     UM_TIMEOUT);
+      if (ret < 0)
+        return false;
       debug ("Write result: %i", ret);
     }
     pos+=4;
   }
-
-exit:
-  if (transfer)
-  {
-    closeUSB(ctx, handle, interface);
-  }
-  else
-  {
-    log_info ("board array was not written out!!!");
-  }
-  return result;
 
 error:
   return result;
